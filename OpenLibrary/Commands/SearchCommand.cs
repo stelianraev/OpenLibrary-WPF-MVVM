@@ -38,6 +38,7 @@
 
             var requestResult = await _request.SendRequestAsync<BaseResponse<Book>>(_searchListViewModel.BookTitleSearch, _searchListViewModel.AuthorNameSearch);
 
+
             /// MUST TO OPTIMISE THIS
             foreach (var book in requestResult.Docs)
             {
@@ -46,8 +47,9 @@
                     // Cancel the calculation
                     return;
                 }
+
                 ///WITHOUT AWAIT WORKING FASTER
-                await _request.GetBookCoverImage(book);
+                 _request.GetBookCoverImage(book);
 
                 _searchListViewModel.PopulateBooksCollection(book);
             }

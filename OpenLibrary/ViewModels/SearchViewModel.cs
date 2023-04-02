@@ -29,7 +29,7 @@
             _cancellationTokenSource = new CancellationTokenSource();
             _booksListing = new ObservableCollection<BookListViewModel>();
             SearchCommand = new SearchCommand(this, _request, _logger, _cancellationTokenSource.Token);
-            StopCommand = new StopCommand(this, _logger, _cancellationTokenSource);
+            StopCommand = new StopCommand(_logger, _cancellationTokenSource);
         }
 
         /// <summary>

@@ -8,7 +8,7 @@
         private readonly ILogger _logger;
         private CancellationTokenSource _cancellationTokenSource;
 
-        public StopCommand(SearchViewModel searchListViewModel, ILogger logger, CancellationTokenSource cancellationTokenSource)
+        public StopCommand(ILogger logger, CancellationTokenSource cancellationTokenSource)
         {
             _logger = logger;
             _cancellationTokenSource = cancellationTokenSource;
