@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="OpenLibrary.Views.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OpenLibrary.Views"
+             Background="Moccasin"
+             mc:Ignorable="d" d:DesignWidth="800" Height="751">
+    <Grid MaxWidth="600" Margin="20,10,12,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="BooksLibrary" Grid.RowSpan="4"
+                   Style="{StaticResource Header}"/>
+
+        <Grid Grid.Row="1" Margin="0 50 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Book Title"/>
+            <TextBox Grid.Row="1" Margin="0 5 0 0" Text="{Binding BookTitleSearch}" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Author Name"/>
+            <TextBox Grid.Row="1" Margin="0 5 0 0" Text="{Binding AuthorNameSearch}"/>
+        </Grid>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,160,144">
+            <Button Content="Search" Command="{Binding SearchCommand}"  Margin="0 5 0 0"/>
+        </StackPanel>
+
+
+        <Grid Grid.Row="4" Margin="-10,79,0,-281" HorizontalAlignment="Left" Width="677">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock 
+                    HorizontalAlignment="Center"
+                    Grid.Column="0" 
+                    Style="{StaticResource Header}"
+                    Text="Results" />
+            </Grid>
+
+            <ListView Grid.Row="1" Margin="10,28,67,0" Height="273" VerticalAlignment="Top" ItemsSource="{Binding BooksListing}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <!--<GridViewColumn Header="Cover">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image HorizontalAlignment="Center" Source="{Binding CoverImage}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>-->
+
+                        <GridViewColumn Header="Title">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title}" Padding="0 0 20 0"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Author">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding AuthorName}" Padding="0 0 20 0"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <!--<GridViewColumn Header="Pages">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding NumberOfPages}" Padding="0 0 20 0"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>-->
+
+                        <GridViewColumn Header="Details">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Details" Command="{Binding BookDetailsCommand}"  Margin="0 0 0 0"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>
