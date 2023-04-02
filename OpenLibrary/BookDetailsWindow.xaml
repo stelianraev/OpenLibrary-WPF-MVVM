@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenLibrary" xmlns:views="clr-namespace:OpenLibrary.Views"
         mc:Ignorable="d"
-        Title="BookDetailsWindow" Height="450" Width="800">
+        Title="BookDetailsWindow" Height="582" Width="800">
     <Grid>
-        <views:BookDetailsView DataContext="{Binding CurrentViewModel}" />
+        <views:BookDetailsView DataContext="{Binding CurrentViewModel}" Height="556" VerticalAlignment="Top" />
     </Grid>
 </Window>
