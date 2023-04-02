@@ -42,6 +42,10 @@
             <Button Content="Search" Command="{Binding SearchCommand}" Height="30" Width="87"/>
         </StackPanel>
 
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="-25,6,519,255">
+            <Button Content="Stop" Command="{Binding StopCommand}" Height="30" Width="90"/>
+        </StackPanel>
+
 
         <Grid Grid.Row="4" Margin="-10,79,-128,-281">
             <Grid.RowDefinitions>

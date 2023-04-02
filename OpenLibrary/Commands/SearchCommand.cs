@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Net.Http;
     using System.Reflection.Emit;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
     using NLog;
@@ -14,13 +15,15 @@
     public class SearchCommand : AsyncCommandBase
     {
         private readonly SearchViewModel _searchListViewModel;
+        private readonly CancellationToken _cancellationToken;
         private readonly IOpenLibraryRequest _request;
         private readonly ILogger _logger;
 
-        public SearchCommand(SearchViewModel searchListViewModel, IOpenLibraryRequest request, ILogger logger)
+        public SearchCommand(SearchViewModel searchListViewModel, IOpenLibraryRequest request, ILogger logger, CancellationToken cancellationToken)
         {
             _request = request;
             _logger = logger;
+            _cancellationToken = cancellationToken;
             _searchListViewModel = searchListViewModel;
         }
 
@@ -38,6 +41,11 @@
             /// MUST TO OPTIMISE THIS
             foreach (var book in requestResult.Docs)
             {
+                if (_cancellationToken.IsCancellationRequested)
+                {
+                    // Cancel the calculation
+                    return;
+                }
                 ///WITHOUT AWAIT WORKING FASTER
                 await _request.GetBookCoverImage(book);
 
@@ -53,6 +61,6 @@
                 MessageBox.Show("Not result");
             }
            
-        }
+        }    
     }
 }

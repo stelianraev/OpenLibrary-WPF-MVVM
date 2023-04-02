@@ -1,16 +1,16 @@
 ﻿namespace OpenLibrary.ViewModels
 {
+
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Windows.Controls;
+    using System.Threading;
     using System.Windows.Input;
+
     using NLog;
     using OpenLibrary.Commands;
     using OpenLibrary.Models;
     using OpenLibrary.Services;
-    using OpenLibraryApi.Services;
-   
     /// <summary>
     /// SearchView - Actually is a home screen view
     /// </summary>
@@ -19,14 +19,17 @@
         private string _bookTitleSearch;
         private string _authorNameSearch;
         private readonly ObservableCollection<BookListViewModel> _booksListing;
+        private CancellationTokenSource _cancellationTokenSource;
         private readonly IOpenLibraryRequest _request;
         private readonly ILogger _logger;
         public SearchViewModel(IOpenLibraryRequest request, ILogger logger)
         {
             _request = request;
             _logger = logger;
+            _cancellationTokenSource = new CancellationTokenSource();
             _booksListing = new ObservableCollection<BookListViewModel>();
-            SearchCommand = new SearchCommand(this, _request, _logger);            
+            SearchCommand = new SearchCommand(this, _request, _logger, _cancellationTokenSource.Token);
+            StopCommand = new StopCommand(this, _logger, _cancellationTokenSource);
         }
 
         /// <summary>
@@ -58,6 +61,7 @@
         /// Related to button Search
         /// </summary>
         public ICommand SearchCommand { get; }
+        public ICommand StopCommand { get; }
 
         /// <summary>
         /// Using to populate collection witch store result of request. I am using method to keep collection encapsulated
