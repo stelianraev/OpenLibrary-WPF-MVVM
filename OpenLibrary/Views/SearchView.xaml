@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OpenLibrary.Views"
              Background="Moccasin"
-             mc:Ignorable="d" d:DesignWidth="800" Height="751">
-    <Grid MaxWidth="600" Margin="20,10,12,10">
+             mc:Ignorable="d" Height="796" Width="936">
+    <Grid MaxWidth="600" Margin="21,10,12,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -16,17 +16,17 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Text="BooksLibrary" Grid.RowSpan="4"
-                   Style="{StaticResource Header}"/>
+                   Text="BooksLibrary" Grid.RowSpan="5"
+                   Style="{StaticResource Header}" Margin="200,0,67,290"/>
 
         <Grid Grid.Row="1" Margin="0 50 0 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
+                <RowDefinition/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Book Title"/>
-            <TextBox Grid.Row="1" Margin="0 5 0 0" Text="{Binding BookTitleSearch}" />
+            <TextBlock Grid.Row="0" Text="Book Title" Margin="-128,6,128,22" Grid.RowSpan="2"/>
+            <TextBox Grid.Row="1" Margin="-128,8,-118,-3" Text="{Binding BookTitleSearch}" />
         </Grid>
 
         <Grid Grid.Row="2">
@@ -35,34 +35,35 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Author Name"/>
-            <TextBox Grid.Row="1" Margin="0 5 0 0" Text="{Binding AuthorNameSearch}"/>
+            <TextBlock Grid.Row="0" Text="Author Name" Margin="-127,6,127,21" Grid.RowSpan="2"/>
+            <TextBox Grid.Row="1" Margin="-127,23,-118,10" Text="{Binding AuthorNameSearch}"/>
         </Grid>
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,160,144">
-            <Button Content="Search" Command="{Binding SearchCommand}"  Margin="0 5 0 0"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="-127,6,569,255">
+            <Button Content="Search" Command="{Binding SearchCommand}" Height="30" Width="87"/>
         </StackPanel>
 
 
-        <Grid Grid.Row="4" Margin="-10,79,0,-281" HorizontalAlignment="Left" Width="677">
+        <Grid Grid.Row="4" Margin="-10,79,-128,-281">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Margin="-108,0,10,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="452*"/>
+                    <ColumnDefinition Width="225*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock 
-                    HorizontalAlignment="Center"
+                    HorizontalAlignment="Left"
                     Grid.Column="0" 
                     Style="{StaticResource Header}"
-                    Text="Results" />
+                    Text="Results" Margin="356,0,0,0" />
             </Grid>
 
-            <ListView Grid.Row="1" Margin="10,28,67,0" Height="273" VerticalAlignment="Top" ItemsSource="{Binding BooksListing}">
+            <ListView Grid.Row="0" Margin="-123,36,5,0" Height="456"  VerticalAlignment="Top" ItemsSource="{Binding BooksListing}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -70,13 +71,13 @@
                 </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
-                        <!--<GridViewColumn Header="Cover">
+                        <GridViewColumn Header="Cover">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image HorizontalAlignment="Center" Source="{Binding CoverImage}"/>
+                                    <Image HorizontalAlignment="Center" Source="{Binding CoverImage}" Stretch="Fill" Width="60" Height="64"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
-                        </GridViewColumn>-->
+                        </GridViewColumn>
 
                         <GridViewColumn Header="Title">
                             <GridViewColumn.CellTemplate>

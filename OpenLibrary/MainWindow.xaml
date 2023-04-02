@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d"
         FontSize="14"
-        Title="OpenLibrary" Height="800" Width="800">
+        Title="OpenLibrary" Height="796" Width="936">
     <Grid RenderTransformOrigin="0.504,0.622" Margin="0,0,0,-6">
         <views:SearchView DataContext="{Binding CurrentViewModel}" />
     </Grid>

@@ -1,5 +1,7 @@
 ﻿namespace OpenLibrary.Views
 {
+    using System.Windows;
+    using System;
     using System.Windows.Controls;
 
     /// <summary>

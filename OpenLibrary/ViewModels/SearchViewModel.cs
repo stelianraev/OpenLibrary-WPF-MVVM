@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Windows.Controls;
     using System.Windows.Input;
     using NLog;
     using OpenLibrary.Commands;
@@ -20,13 +21,12 @@
         private readonly ObservableCollection<BookListViewModel> _booksListing;
         private readonly IOpenLibraryRequest _request;
         private readonly ILogger _logger;
-
         public SearchViewModel(IOpenLibraryRequest request, ILogger logger)
         {
             _request = request;
             _logger = logger;
             _booksListing = new ObservableCollection<BookListViewModel>();
-            SearchCommand = new SearchCommand(this, _request, _logger);   
+            SearchCommand = new SearchCommand(this, _request, _logger);            
         }
 
         /// <summary>
@@ -64,10 +64,10 @@
         /// </summary>
         /// <param name="book"></param>
         public void PopulateBooksCollection(Book book)
-        {
+        {            
             try
             {
-                BookListViewModel bookListView = new BookListViewModel(book);
+                BookListViewModel bookListView = new BookListViewModel(book, _logger);
 
                 _booksListing.Add(bookListView);
             }

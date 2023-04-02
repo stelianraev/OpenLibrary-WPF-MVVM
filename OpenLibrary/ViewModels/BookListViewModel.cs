@@ -29,7 +29,7 @@
         public string Title => _book.Title;
         public int? FirstPublishYear => _book.FirstPublishYear;
         public float? RatingAverage => _book.RatingAverage;
-        public string AuthorName => String.Join(Environment.NewLine, _book.AuthorName); 
+        public string AuthorName => String.Join(Environment.NewLine, _book.AuthorName ?? new string[0]); 
         public BitmapImage? CoverImage => _book.CoverImage;
 
 

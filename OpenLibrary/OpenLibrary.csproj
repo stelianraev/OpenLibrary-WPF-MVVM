@@ -13,4 +13,10 @@
     <PackageReference Include="NLog" Version="5.1.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\NoImage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

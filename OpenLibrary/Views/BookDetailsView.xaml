@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OpenLibrary.Views"
              mc:Ignorable="d" 
-             Background="LightYellow" d:DesignWidth="800" Height="571">
-    <Grid>
+             Background="LightYellow" d:DesignWidth="800" Height="559">
+    <Grid Margin="0,0,0,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -40,7 +40,7 @@
 
         <Grid Grid.Row="5">
             <TextBlock Text="Rating" Margin="15 10 0 0 "/>
-            <TextBlock Margin="74,13,-26,-3" Text="{Binding RatingAverage}"/>
+            <TextBlock Margin="74,13,-26,-21" Text="{Binding RatingAverage}"/>
         </Grid>
 
     </Grid>

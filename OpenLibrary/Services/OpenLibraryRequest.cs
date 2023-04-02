@@ -1,9 +1,15 @@
-﻿namespace OpenLibraryApi.Services
+﻿using OpenLibrary.Models;
+using System.IO;
+using System.Windows.Media.Imaging;
+using System;
+
+namespace OpenLibraryApi.Services
 {
     using System;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using System.Windows.Media.Imaging;
@@ -15,14 +21,39 @@
     {
         private IOpenLibraryResponseParsing _openLibraryResponseParsing;
         private readonly ILogger _logger;
+        private readonly string _baseBookUri = "https://openlibrary.org/search.json?title=";
+        private readonly string _baseAuthorUri = "https://openlibrary.org/search.json?author=";
+        private readonly string _defaultSearch = "https://openlibrary.org/search.json?q=null";
+        private readonly BitmapImage _noImage;
         public OpenLibraryRequest(IOpenLibraryResponseParsing openLibraryResponseParsing, ILogger logger)
         {
             _logger = LogManager.GetCurrentClassLogger();
             _openLibraryResponseParsing = openLibraryResponseParsing;
+
+            _noImage = GetNoImagePicture();
         }
 
-        private readonly string _baseBookUri = "https://openlibrary.org/search.json?title=";
-        private readonly string _baseAuthorUri = " https://openlibrary.org/search.json?author=";
+        private BitmapImage GetNoImagePicture()
+        {
+            var assemblyPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var resourcesPath = Path.Combine(assemblyPath, "Resources");
+            var imgPath = Path.Combine(resourcesPath, "NoImage.jpg");
+
+            var imgData = File.ReadAllBytes(imgPath);
+
+            using (var stream = new MemoryStream(imgData))
+            {
+                BitmapImage image = new BitmapImage();
+                //var bitmap = Bitmap.FromStream(stream);
+
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = stream;
+                image.EndInit();
+
+                return image;
+            }
+        }
 
         /// <summary>
         /// Dynamicaly Url Building depends on requeirements
@@ -35,7 +66,7 @@
             bool bookTrue = false;
             bool authorTrue = false;
 
-            string requestUri = null;
+            string requestUri = _defaultSearch;
 
             if (!String.IsNullOrEmpty(bookTitle) && !String.IsNullOrWhiteSpace(bookTitle))
             {
@@ -66,15 +97,15 @@
                     requestUri = $"{_baseAuthorUri}{author}";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Url builder fail: {URLBuilder}");
-            }            
+            }
 
             return requestUri;
         }
 
-               
+
         /// <summary>
         /// Send Request and get JSON Response from API
         /// </summary>
@@ -135,8 +166,8 @@
             }
             catch (Exception ex)
             {
-                
-            }      
+                _logger.Error(ex, "Send Request Error {SendRequestError}");
+            }
 
             return result;
         }
@@ -151,28 +182,25 @@
         /// <summary>
         /// Construct uri depends on filled inputs
         /// </summary>
-        /// <param name="olid"></param>
         /// <returns></returns>
         public async Task GetBookCoverImage(Book book)
         {
             string coverUrl;
+            byte[] imageData;
 
-            var olid = book.Key.Split("/", StringSplitOptions.RemoveEmptyEntries).ToArray()[1];
+            coverUrl = $"https://covers.openlibrary.org/b/id/{book.CoverId}-L.jpg";
 
-            if (!String.IsNullOrEmpty(olid) && !String.IsNullOrWhiteSpace(olid))
+            try
             {
-            //var input = inputTitle.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            //var join = String.Join('+', input);           
-                coverUrl = $"https://covers.openlibrary.org/b/olid/{olid}-L.jpg";
-
-                using (var client = new HttpClient())
+                using (HttpClient client = new HttpClient())
                 {
-                    var response = await client.GetAsync(coverUrl); // Download the image data as a HttpResponseMessage
-                    if (response.IsSuccessStatusCode)
-                    {
-                        byte[] imageData = await response.Content.ReadAsByteArrayAsync();
+                    var response = await client.GetByteArrayAsync(coverUrl);
 
-                        await using (var stream = new MemoryStream(imageData))
+                    //if (response.IsSuccessStatusCode)
+                    //{
+                    //    imageData = await response.Content.ReadAsByteArrayAsync();
+                    //
+                        using (var stream = new MemoryStream(response))
                         {
                             BitmapImage image = new BitmapImage();
                             //var bitmap = Bitmap.FromStream(stream);
@@ -184,9 +212,15 @@
 
                             book.CoverImage = image;
                         }
-                    }
+                    //}
                 }
             }
-        }        
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Getting image fail");
+
+                book.CoverImage = _noImage;
+            }
+        }
     }
 }

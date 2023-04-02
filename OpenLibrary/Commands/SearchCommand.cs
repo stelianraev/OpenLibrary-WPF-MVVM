@@ -1,6 +1,9 @@
 ﻿namespace OpenLibrary.Commands
 {
+    using System;
     using System.Linq;
+    using System.Net.Http;
+    using System.Reflection.Emit;
     using System.Threading.Tasks;
     using System.Windows;
     using NLog;
@@ -28,20 +31,20 @@
         /// <returns></returns>
         public override async Task ExecuteAsync(object? parameter)
         {
-            MessageBox.Show("Please wait");
-
             _searchListViewModel.ClearBooksCollection();
 
             var requestResult = await _request.SendRequestAsync<BaseResponse<Book>>(_searchListViewModel.BookTitleSearch, _searchListViewModel.AuthorNameSearch);
 
+            /// MUST TO OPTIMISE THIS
             foreach (var book in requestResult.Docs)
             {
-                _searchListViewModel.PopulateBooksCollection(book);                
+                ///WITHOUT AWAIT WORKING FASTER
+                await _request.GetBookCoverImage(book);
 
-                _request.GetBookCoverImage(book);
-
-                _logger.Info("All pass sucessfully");
+                _searchListViewModel.PopulateBooksCollection(book);
             }
+
+            _logger.Info("Successfully request");
 
             if (!_searchListViewModel.BooksListing.Any())
             {
